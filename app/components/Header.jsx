@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
+import { Bars3Icon } from '@heroicons/react/24/outline';
 
  
 const services = [
@@ -21,24 +22,30 @@ const careers = [
 export default function Header() {
   
   const [activeNavItem, setActiveNavItem] = useState('home');
-  const [dropDownOpen, isDropDownOpen] = useState(false)
-  const [careerDropDown, isCareerDropDown] = useState(false)
-  
+  const [dropDownOpen, setDropDownOpen] = useState(false)
+  const [careerDropDown, setCareerDropDown] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
     function openDropDown() {
-        isDropDownOpen(true)
+        setDropDownOpen(true)
     }
 
     function closeDropDown() {
-        isDropDownOpen(false)
+        setDropDownOpen(false)
     }
 
     function toggleDropDown() {
-        isDropDownOpen(true)
+        setCareerDropDown(true)
     }
 
     function DropDownClose() {
-        isCareerDropDown(false)
+        setCareerDropDown(false)
     }
+
+    const toggleMobileMenu = () => {
+        setMobileMenuOpen(!mobileMenuOpen);
+      };
+    
 
   const pathname = usePathname()
 
@@ -48,7 +55,7 @@ export default function Header() {
 
   return (
     <nav className="bg-[#040021] py-4">
-      <div className="container mx-auto flex items-center justify-around">
+      <div className="container mx-auto flex items-center justify-between lg:justify-around">
         <Link href={"/"}>
             <Image 
             src={"/techlogo.png"} 
@@ -58,7 +65,11 @@ export default function Header() {
             alt='Techone Logo'
             />
         </Link>
-        <ul className="flex space-x-4">
+        <div className="lg:hidden cursor-pointer" onClick={toggleMobileMenu}>
+        <Bars3Icon className="h-6 w-6" aria-hidden="true" />
+        </div>
+
+        <ul className="space-x-4 hidden lg:flex">
           <li className="relative group">
             <Link
               href="/"
@@ -66,7 +77,7 @@ export default function Header() {
                 activeNavItem === 'home'
                   ? 'text-[#fbce0b] font-semibold border-b-2 border-[#fbce0b]'
                   : 'text-gray-300'
-              } hover:text-[#fbce0b] hover:border-b-2 hover:border-[#fbce0b] transition-all duration-300`}
+              } hover:text-[#fbce0b] underline-effect`}
               onClick={() => handleNavItemClick('home')}
             >
               Home
@@ -79,7 +90,7 @@ export default function Header() {
                 activeNavItem === 'about'
                   ? 'text-[#fbce0b] font-semibold border-b-2 border-[#fbce0b]'
                   : 'text-gray-200'
-              } hover:text-[#fbce0b] hover:border-b-2 hover:border-[#fbce0b] transition-all duration-300`}
+              } hover:text-[#fbce0b] underline-effect`}
               onClick={() => handleNavItemClick('about')}
             >
               About
@@ -100,7 +111,7 @@ export default function Header() {
                   >
                     {services.map((service) =>
                         <Link href={service.url}
-                        className='hover:text-[#fbce0b] hover:border-[#fbce0b] pt-2 my-2 text-start border-t-2'
+                        className='hover:text-[#fbce0b] underline-effect pt-2 my-2 text-start border-t-2'
                         >{service.title}</Link>
                     )}
                   </div>
@@ -115,7 +126,7 @@ export default function Header() {
                 activeNavItem === 'insight'
                   ? 'text-[#fbce0b] font-semibold border-b-2 border-[#fbce0b]'
                   : 'text-gray-200'
-              } hover:text-[#fbce0b] hover:border-b-2 hover:border-[#fbce0b] transition-all duration-300`}
+              } hover:text-[#fbce0b] underline-effect`}
               onClick={() => handleNavItemClick('offshore')}
             >
               Offshore Outsourcing
@@ -128,25 +139,13 @@ export default function Header() {
                 activeNavItem === 'insight'
                   ? 'text-[#fbce0b] font-semibold border-b-2 border-[#fbce0b]'
                   : 'text-gray-200'
-              } hover:text-[#fbce0b] hover:border-b-2 hover:border-[#fbce0b] transition-all duration-300`}
+              } hover:text-[#fbce0b] underline-effect`}
               onClick={() => handleNavItemClick('insight')}
             >
               Insight
             </Link>
           </li>
-          <li className="relative group">
-            <Link
-              href="/career"
-              className={`${
-                activeNavItem === 'career'
-                  ? 'text-[#fbce0b] font-semibold border-b-2 border-[#fbce0b]'
-                  : 'text-gray-200'
-              } hover:text-[#fbce0b] hover:border-b-2 hover:border-[#fbce0b] transition-all duration-300`}
-              onClick={() => handleNavItemClick('career')}
-            >
-              Career
-            </Link>
-          </li>
+          
 
           <div className="relative pb-3"
           onMouseLeave={DropDownClose}
@@ -158,11 +157,11 @@ export default function Header() {
             {careerDropDown && (
                 <div className="absolute mt-2 origin-top-right transition-all duration-300  shadow-lg md:w-48 top-5">
                   <div 
-                  className="px-2 pt-2 bg-white shadow flex flex-col text-start w-72 border-t-4 border-t-[#fbce0b]"
+                  className="px-2 pt-2 bg-white shadow flex flex-col text-start w-64 border-t-4 border-t-[#fbce0b]"
                   >
                     {careers.map((career) =>
                         <Link href={career.url}
-                        className='hover:text-[#fbce0b] hover:border-[#fbce0b] pt-2 my-2 text-start border-t-2'
+                        className='underline-effect'
                         >{career.title}</Link>
                     )}
                   </div>
@@ -176,11 +175,38 @@ export default function Header() {
                 activeNavItem === 'contact'
                   ? 'text-[#fbce0b] font-semibold border-b-2 border-[#fbce0b]'
                   : 'text-gray-200'
-              } hover:text-[#fbce0b] hover:border-b-2 hover:border-[#fbce0b] transition-all duration-300`}
+              } hover:text-[#fbce0b] underline-effect`}
               onClick={() => handleNavItemClick('contact')}
             >
               Contact
             </Link>
+          </li>
+        </ul>
+
+        <ul
+          className={`${
+            mobileMenuOpen ? 'block' : 'hidden'
+          } flex flex-col right-0 top-24 w-2/3 md:w-1/3 bg-white absolute text-black`}
+        >
+          <li className="relative group">
+            <a href="#home" className="text-black hover:text-gray-300">
+              Home
+            </a>
+          </li>
+          <li className="relative group">
+            <a href="#about" className="text-black hover:text-gray-300">
+              About
+            </a>
+          </li>
+          <li className="relative group">
+            <a href="#services" className="text-black hover:text-gray-300">
+              Services
+            </a>
+          </li>
+          <li className="relative group">
+            <a href="#contact" className="text-black hover:text-gray-300">
+              Contact
+            </a>
           </li>
         </ul>
       </div>
